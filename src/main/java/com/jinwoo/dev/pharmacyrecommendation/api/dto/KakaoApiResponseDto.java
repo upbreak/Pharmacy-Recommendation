@@ -21,7 +21,7 @@ public class KakaoApiResponseDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public class MetaDto {
+    public static class MetaDto {
 
         @JsonProperty("total_count")
         private Integer totalCount;
@@ -30,7 +30,7 @@ public class KakaoApiResponseDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public class DocumentDto {
+    public static class DocumentDto {
 
         @JsonProperty("address_name")
         private String addressName;
