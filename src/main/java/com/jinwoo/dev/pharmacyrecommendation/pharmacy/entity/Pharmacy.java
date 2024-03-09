@@ -1,5 +1,6 @@
 package com.jinwoo.dev.pharmacyrecommendation.pharmacy.entity;
 
+import com.jinwoo.dev.pharmacyrecommendation.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "pharmacy")
-public class Pharmacy {
+public class Pharmacy extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
