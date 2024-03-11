@@ -43,10 +43,9 @@ class PharmacyServiceTest extends AbstractIntegrationContainerBaseTest{
 
     }
 
-    def "pharmacyRepository updateWithoutTransaction - dirty checking fail" (){
+    def "self invocation test" (){
         given:
         String address = "서울 특별시 성북구 종암동"
-        String modifyAddress = "서울 광진구 구의동"
         String name = "은혜 약국"
         double latitude = 36.11
         double longitude = 128.11
@@ -59,13 +58,11 @@ class PharmacyServiceTest extends AbstractIntegrationContainerBaseTest{
                 .build()
 
         when:
-        def entity = pharmacyRepository.save(pharmacy)
-        pharmacyService.updateAddressWithoutTransaction(entity.id, modifyAddress)
-
-        def result = pharmacyRepository.findAll()
+        pharmacyService.bar(Arrays.asList(pharmacy))
 
         then:
-        result.get(0).pharmacyAddress == address
-
+        def e = thrown(RuntimeException.class)
+        def result = pharmacyService.findAll()
+        result.size() == 1 //트랜잭션이 적용되지 않았다 (rollback x)
     }
 }
