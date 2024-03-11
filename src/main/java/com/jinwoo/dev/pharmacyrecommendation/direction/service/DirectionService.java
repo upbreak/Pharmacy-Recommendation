@@ -1,6 +1,7 @@
 package com.jinwoo.dev.pharmacyrecommendation.direction.service;
 
 import com.jinwoo.dev.pharmacyrecommendation.api.dto.KakaoApiResponseDto;
+import com.jinwoo.dev.pharmacyrecommendation.api.service.KakaoCategorySearchService;
 import com.jinwoo.dev.pharmacyrecommendation.direction.entity.Direction;
 import com.jinwoo.dev.pharmacyrecommendation.direction.repository.DirectionRepository;
 import com.jinwoo.dev.pharmacyrecommendation.pharmacy.service.PharmacySearchService;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +28,7 @@ public class DirectionService {
 
     private final PharmacySearchService pharmacySearchService;
     private final DirectionRepository directionRepository;
+    private final KakaoCategorySearchService kakaoCategorySearchService;
 
     @Transactional
     public List<Direction> saveAll(List<Direction> directionList){
@@ -53,6 +56,26 @@ public class DirectionService {
                 )
                 .filter(direction -> direction.getDistance() <= RADIUS_KM)
                 .sorted(Comparator.comparing(Direction::getDistance))
+                .limit(MAX_SEARCH_COUNT)
+                .collect(Collectors.toList());
+    }
+
+    public List<Direction> buildDirectionKakaoCategoryList(KakaoApiResponseDto.DocumentDto documentDto){
+        if(Objects.isNull(documentDto)) return Collections.emptyList();
+
+        return kakaoCategorySearchService.requestPharmacyCategorySearch(documentDto.getLatitude(), documentDto.getLongitude(), RADIUS_KM)
+                .getDocumentList().stream()
+                .map(document -> Direction.builder()
+                        .inputAddress(documentDto.getAddressName())
+                        .inputLatitude(documentDto.getLatitude())
+                        .inputLongitude(documentDto.getLongitude())
+                        .targetPharmacyName(document.getPlaceName())
+                        .targetAddress(document.getAddressName())
+                        .targetLatitude(document.getLatitude())
+                        .targetLongitude(document.getLongitude())
+                        .distance(calculateDistance(documentDto.getLatitude(), documentDto.getLongitude(), document.getLatitude(), document.getLongitude()))
+                        .build()
+                )
                 .limit(MAX_SEARCH_COUNT)
                 .collect(Collectors.toList());
     }

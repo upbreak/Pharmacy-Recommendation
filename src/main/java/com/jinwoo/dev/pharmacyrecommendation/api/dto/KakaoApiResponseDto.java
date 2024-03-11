@@ -34,6 +34,9 @@ public class KakaoApiResponseDto {
     @NoArgsConstructor
     public static class DocumentDto {
 
+        @JsonProperty("place_name")
+        private String placeName;
+
         @JsonProperty("address_name")
         private String addressName;
 
@@ -42,6 +45,9 @@ public class KakaoApiResponseDto {
 
         @JsonProperty("y")
         private double latitude;
+
+        @JsonProperty("distance")
+        private double distance;
 
     }
 }
