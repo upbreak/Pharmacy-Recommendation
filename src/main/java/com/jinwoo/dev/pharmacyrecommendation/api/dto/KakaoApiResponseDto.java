@@ -44,5 +44,4 @@ public class KakaoApiResponseDto {
         private double latitude;
 
     }
-
 }
