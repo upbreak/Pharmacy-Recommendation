@@ -65,4 +65,4 @@ spring:
 pharmacy:
   recommendation:
     base:
-      url: http://localhost:8080/dir/
+      url: http://54.180.209.163:8080/dir/
