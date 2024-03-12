@@ -30,7 +30,6 @@ public class FormController {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("output");
-//        modelAndView.addObject("responseList", OutputDto);
         modelAndView.addObject("responseList", responseList);
 
         return modelAndView;
