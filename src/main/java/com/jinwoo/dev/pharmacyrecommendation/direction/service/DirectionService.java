@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,16 +26,28 @@ public class DirectionService {
 
     private static final int MAX_SEARCH_COUNT = 3; //약국 최대 검색 갯수
     private static final double RADIUS_KM = 10.0; //반경 10km
+    private static final String DIRECTION_BASE_URL = "https://map.kakao.com/link/map/";
 
     private final PharmacySearchService pharmacySearchService;
     private final DirectionRepository directionRepository;
     private final KakaoCategorySearchService kakaoCategorySearchService;
+    private final Base62Service base62Service;
 
     @Transactional
     public List<Direction> saveAll(List<Direction> directionList){
         if(CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
 
         return directionRepository.saveAll(directionList);
+    }
+
+    public String findByDirectionUrl(String encodeId){
+        Long decodeDirectionId = base62Service.decodeDirectionId(encodeId);
+
+        Direction direction = directionRepository.findById(decodeDirectionId).orElse(null);
+
+        String param = String.join(",", direction.getTargetPharmacyName(), String.valueOf(direction.getTargetLatitude()), String.valueOf(direction.getTargetLongitude()));
+        return UriComponentsBuilder.fromHttpUrl(DIRECTION_BASE_URL + param)
+                .toUriString();
     }
 
     public List<Direction> buildDirectionList(KakaoApiResponseDto.DocumentDto documentDto){
