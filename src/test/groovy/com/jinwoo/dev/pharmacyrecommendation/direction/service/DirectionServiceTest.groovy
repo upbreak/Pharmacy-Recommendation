@@ -2,6 +2,8 @@ package com.jinwoo.dev.pharmacyrecommendation.direction.service
 
 
 import com.jinwoo.dev.pharmacyrecommendation.api.dto.KakaoApiResponseDto
+import com.jinwoo.dev.pharmacyrecommendation.api.service.KakaoCategorySearchService
+import com.jinwoo.dev.pharmacyrecommendation.direction.repository.DirectionRepository
 import com.jinwoo.dev.pharmacyrecommendation.pharmacy.dto.PharmacyDto
 import com.jinwoo.dev.pharmacyrecommendation.pharmacy.service.PharmacySearchService
 import spock.lang.Specification
@@ -9,8 +11,16 @@ import spock.lang.Specification
 class DirectionServiceTest extends Specification{
 
     private final PharmacySearchService pharmacySearchService = Mock()
+    private final DirectionRepository directionRepository = Mock()
+    private final KakaoCategorySearchService kakaoCategorySearchService = Mock()
+    private final Base62Service base62Service = Mock()
 
-    private DirectionService directionService = new DirectionService(pharmacySearchService)
+    private DirectionService directionService = new DirectionService(
+                                            pharmacySearchService
+                                            , directionRepository
+                                            , kakaoCategorySearchService
+                                            , base62Service
+    )
 
     private List<PharmacyDto> pharmacyDtos
 
