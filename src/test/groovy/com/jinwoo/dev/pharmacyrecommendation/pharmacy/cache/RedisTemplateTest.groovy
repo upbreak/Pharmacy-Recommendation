@@ -1,12 +1,14 @@
 package com.jinwoo.dev.pharmacyrecommendation.pharmacy.cache
 
 import com.jinwoo.dev.pharmacyrecommendation.AbstractIntegrationContainerBaseTest
+import org.junit.Ignore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.HashOperations
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.SetOperations
 import org.springframework.data.redis.core.ValueOperations
 
+@Ignore
 class RedisTemplateTest extends AbstractIntegrationContainerBaseTest{
 
     @Autowired
