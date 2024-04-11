@@ -1,7 +1,4 @@
 입력한 주소정보와 가까운 약국 3곳을 추천하는 서비스를 제공하는 프로젝트입니다.
-#### download link
-https://drive.google.com/file/d/12i2KO12wHs4ObmUqd1v16_0UsQR8mSES/view?usp=drive_link
-<br/><br/><br/>
 
 ## 개발 환경
 - Intellij IDEA Ultimate 2023.3.2
